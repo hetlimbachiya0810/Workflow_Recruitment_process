@@ -236,6 +236,3 @@ The training data pipeline is already embedded in Phase 1 (`override_score`, `ov
 
 ---
 
-## License
-
-MIT
