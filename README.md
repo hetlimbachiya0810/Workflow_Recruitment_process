@@ -169,6 +169,9 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 REFRESH_TOKEN_EXPIRE_DAYS=7
 ENVIRONMENT=development
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-cloudinary-api-key
+CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 ```
 
 **frontend/.env**
@@ -203,6 +206,24 @@ VITE_API_BASE_URL=http://localhost:8000
 | GET | /vendors/{id} | Get single vendor |
 | PATCH | /vendors/{id}/approval | Approve or revoke |
 
+### Job Descriptions (Admin / Recruiter / Role-filtered)
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /jds | Create JD (admin/recruiter) |
+| GET | /jds | List JDs (role-filtered by access rules) |
+| GET | /jds/{jd_id} | Get single JD |
+| PATCH | /jds/{jd_id} | Partial update of JD |
+| PATCH | /jds/{jd_id}/status | Status-only update |
+| POST | /jds/{jd_id}/float | Float JD to vendors |
+| GET | /jds/{jd_id}/assignments | List JD vendor assignments |
+| PATCH | /jds/{jd_id}/acknowledge | Vendor acknowledges assignment |
+
+### CV Submissions (Vendor)
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /submissions | Submit CV with multipart upload |
+| GET | /submissions/my | View vendor submission history |
+
 ### System
 | Method | Endpoint | Description |
 |---|---|---|
@@ -216,7 +237,7 @@ VITE_API_BASE_URL=http://localhost:8000
 | Phase | Description | Status |
 |---|---|---|
 | Phase 1 — Foundation | Auth, schema, role routing | ✅ Complete |
-| Phase 2 — Core Recruitment Loop | JD management, CV submission portal | 🔄 In Progress |
+| Phase 2 — Core Recruitment Loop | JD management, vendor float/ack, CV submission portal | ✅ Backend Complete / 🔄 Frontend In Progress |
 | Phase 3 — CV Matching Engine | PDF parsing, semantic scoring, shortlisting | 🔲 Planned |
 | Phase 4 — Client Portal | Pipeline view, feedback, interviews | 🔲 Planned |
 | Phase 5 — Admin, Financials & Config | Margin calculator, reports, config UI | 🔲 Planned |
