@@ -17,6 +17,11 @@ class Settings(BaseSettings):
     APP_NAME: str = "Shivaay HR Platform"
     APP_VERSION: str = "1.0.0"
 
+    # Cloudinary
+    cloudinary_cloud_name: str
+    cloudinary_api_key: str
+    cloudinary_api_secret: str
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

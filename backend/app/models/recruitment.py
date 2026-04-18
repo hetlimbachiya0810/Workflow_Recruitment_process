@@ -3,8 +3,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from pgvector.sqlalchemy import Vector
 from app.database import Base
-
-
 class JobDescription(Base):
     __tablename__ = "job_descriptions"
 
@@ -31,8 +29,6 @@ class JobDescription(Base):
     cv_submissions = relationship("CVSubmission", back_populates="job_description")
     shortlists = relationship("Shortlist", back_populates="job_description")
     vendor_assignments = relationship("JDVendorAssignment", back_populates="job_description")
-
-
 class Candidate(Base):
     __tablename__ = "candidates"
 
@@ -48,8 +44,6 @@ class Candidate(Base):
 
     # Relationships
     cv_submissions = relationship("CVSubmission", back_populates="candidate")
-
-
 class CVSubmission(Base):
     __tablename__ = "cv_submissions"
 
@@ -68,3 +62,21 @@ class CVSubmission(Base):
     vendor = relationship("Vendor", back_populates="cv_submissions")
     match_score = relationship("MatchScore", back_populates="cv_submission", uselist=False)
     shortlist_items = relationship("ShortlistItem", back_populates="cv_submission")
+class JDVendorAssignment(Base):
+    __tablename__ = "jd_vendor_assignments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    jd_id = Column(Integer, ForeignKey("job_descriptions.id"), nullable=False)
+    vendor_id = Column(Integer, ForeignKey("vendors.id"), nullable=False)
+    floated_by = Column(Integer, ForeignKey("users.id"), nullable=False)
+    floated_at = Column(DateTime(timezone=True), server_default=func.now())
+    deadline = Column(DateTime(timezone=True), nullable=True)
+    status = Column(String(50), default="active", nullable=False)
+    # status values: active | closed | cancelled
+    vendor_acknowledged = Column(Boolean, default=False)
+    acknowledged_at = Column(DateTime(timezone=True), nullable=True)
+
+    # Relationships
+    job_description = relationship("JobDescription", back_populates="vendor_assignments")
+    vendor = relationship("Vendor", back_populates="jd_assignments")
+    floater = relationship("User", foreign_keys=[floated_by])

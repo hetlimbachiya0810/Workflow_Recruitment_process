@@ -61,6 +61,14 @@ def get_current_user(
     return user
 
 
+def get_current_active_user(
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: Session = Depends(get_db),
+) -> User:
+    """Backward-compatible alias for get_current_user."""
+    return get_current_user(credentials=credentials, db=db)
+
+
 # ─────────────────────────────────────────
 # ROLE GUARD FACTORY
 # ─────────────────────────────────────────
@@ -94,6 +102,13 @@ def require_roles(*allowed_roles: str):
         return current_user
 
     return role_checker
+
+
+def require_role(allowed_roles):
+    """Backward-compatible wrapper for routers that pass a list of roles."""
+    if isinstance(allowed_roles, (list, tuple, set)):
+        return require_roles(*allowed_roles)
+    return require_roles(allowed_roles)
 
 
 # ─────────────────────────────────────────

@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.routers import auth, users, vendors, config
+from app.routers import jds, submissions
+from app.core.cloudinary_client import init_cloudinary
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -9,6 +12,8 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+init_cloudinary()
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,7 +28,8 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(vendors.router)
 app.include_router(config.router)
-
+app.include_router(jds.router)
+app.include_router(submissions.router)
 
 @app.get("/health")
 def health_check():
